@@ -1,13 +1,28 @@
 const express = require("express");
+const Article = require('./models/article');
+const mongoose = require('mongoose');
+const articleRouter = require('./routes/articles'); 
+const methodOverride = require('method-override');
+
 const app = express();
 
-app.set('view engine', 'ejs');
+mongoose.connect('mongodb://localhost/blog', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
-app.get("/" , (req, res) => {
-    res.send("Hello Neel");
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride('_method'));
+
+app.get("/" , async (req, res) => {
+
+    const articles = await Article.find().sort({ date: 'desc'});
+    
+    res.render('articles/index', { articles: articles });
 });
 
-app.listen(3000);
+app.use('/articles', articleRouter);
+
+app.listen(1234);
+
 
 
 console.log("Hello world");
