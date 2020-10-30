@@ -28,6 +28,8 @@ router.post('/', async (req, res, next) => {
 }, saveArticleAndRedirect('new'));
 
 router.put('/:id', async (req, res, next) => {
+    console.log("Inside Put method")
+
     req.article = await Article.findById(req.params.id);
     next();
 }, saveArticleAndRedirect('edit'));

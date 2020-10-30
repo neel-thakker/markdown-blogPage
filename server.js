@@ -14,6 +14,8 @@ app.use(methodOverride('_method'));
 
 app.get("/" , async (req, res) => {
 
+    console.log("\nHome Page\n");
+
     const articles = await Article.find().sort({ date: 'desc'});
     
     res.render('articles/index', { articles: articles });
